@@ -1,7 +1,8 @@
 'use strict';
 
 const Promise = require('bluebird');
-const glob = Promise.promisifyAll(require('glob'));
+const glob = Promise.promisify(require('glob'));
+const path = require('path');
 
 module.exports = class Services {
   constructor (seneca) {
@@ -11,6 +12,7 @@ module.exports = class Services {
       },
       seneca: seneca
     };
+    this.seneca = seneca;
   }
 
   expose (key, value) {
@@ -38,20 +40,18 @@ module.exports = class Services {
     });
   }
 
-  load (options, addOptions) {
-    return globAsync(
-      options.globPath || './lib/controllers/**/*.js'
-    ).each(service => {
-      seneca.add(service.pin, (msg, reply) => {
-        const auth = { auth: { credentials: msg.session } } || {};
-        const module = require(service.request);
-        const optional =
-          typeof addOptions === 'function' ? addOptions(msg) : {};
-
-        return Promise.resolve(
-          module.request({ ...this.request, ...auth, ...optional }, msg.data)
-        ).asCallback(reply);
+  load (options = {}, addOptions) {
+    return glob(options.globPath || path.resolve('./lib/controllers/**/*.js'))
+      .map(service => require(service))
+      .each(service => {
+        this.seneca.add(service.pin, (msg, reply) => {
+          const auth = { auth: { credentials: msg.session } } || {};
+          const optional =
+            typeof addOptions === 'function' ? addOptions(msg) : {};
+          return Promise.resolve(
+            service.request({ ...this.request, ...auth, ...optional }, msg.data)
+          ).asCallback(reply);
+        });
       });
-    });
   }
 };
