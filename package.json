@@ -1,0 +1,38 @@
+{
+  "name": "seneca-service-loader",
+  "version": "1.0.0",
+  "description": "A seneca service loader with a clean structure for building microservices with seneca'",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tobias Gurtzick <magic@wizardtales.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.5.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.9.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.2.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wzrdtales/seneca-service-loader.git"
+  },
+  "keywords": [
+    "seneca",
+    "services",
+    "micro",
+    "microservices",
+    "loader",
+    "microservice"
+  ],
+  "bugs": {
+    "url": "https://github.com/wzrdtales/seneca-service-loader/issues"
+  },
+  "homepage": "https://github.com/wzrdtales/seneca-service-loader#readme"
+}
