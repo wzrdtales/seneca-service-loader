@@ -21,16 +21,27 @@ module.exports = class Services {
 
   register (plugins) {
     return Promise.resolve(plugins).each(plugin => {
+      let attributes;
+      let name;
       if (typeof plugin === 'string') {
         plugin = {
-          register: plugin
+          register: require(plugin)
         };
       }
 
+      attributes = plugin.register.register.attributes;
+      name = attributes.name || attributes.pkg.name;
       plugin.options = plugin.options || {};
+      this.request.server.plugins[name] = {};
 
       return new Promise((resolve, reject) => {
-        plugin.register.register(this, plugin.options, err => {
+        const overwrite = {
+          expose: (key, value) => {
+            this.request.server.plugins[name][key];
+          }
+        };
+        const serverInstance = { ...this.request, ...overwrite };
+        plugin.register.register(serverInstance, plugin.options, err => {
           if (err) {
             return reject(err);
           }
