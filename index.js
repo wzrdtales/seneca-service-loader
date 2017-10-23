@@ -37,7 +37,7 @@ module.exports = class Services {
       return new Promise((resolve, reject) => {
         const overwrite = {
           expose: (key, value) => {
-            this.request.server.plugins[name][key];
+            this.request.server.plugins[name][key] = value;
           }
         };
         const serverInstance = { ...this.request, ...overwrite };
