@@ -1,6 +1,6 @@
 {
   "name": "seneca-service-loader",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A seneca service loader with a clean structure for building microservices with seneca'",
   "main": "index.js",
   "scripts": {
