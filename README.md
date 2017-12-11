@@ -1,5 +1,5 @@
 ![Seneca](http://senecajs.org/files/assets/seneca-logo.png)
-> A [Seneca.js](http://senecajs.org) Event and Message Muxing Plugin
+> A [Seneca.js](http://senecajs.org) Structure Plugin 
 
 # seneca-service-loader
 [![npm version][npm-badge]][npm-url]
