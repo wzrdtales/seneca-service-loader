@@ -23,14 +23,14 @@ Now you can require the plugin and use it, like in the following example:
 ```javascript
 'use strict';
 
-const Service = require("seneca-service-loader");
+const Service = require('seneca-service-loader');
 const seneca = require('seneca');
 
 const service = new Service(seneca);
 service
   .register([
     {
-      register: require("hapi-mariadb"),
+      register: require('hapi-mariadb'),
       options: {
         mariasql: config.database,
         connectionCount: 8,
@@ -47,7 +47,7 @@ Now it will allow you to load any file from lib/controllers/*.js. A service look
 'use strict';
 
 module.exports = {
-  pin: "my:pin,command:name":,
+  pin: 'my:pin,command:name':,
   request: async (request, data) => {
     return null;
   }
