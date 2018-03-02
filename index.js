@@ -1,3 +1,8 @@
+● Validation Warning:
+
+  Unknown option "single-quote" with value true was found. Did you mean "singleQuote"?
+  This is probably a typing mistake. Fixing it will remove this message.
+
 'use strict';
 
 const Promise = require('bluebird');
@@ -60,7 +65,10 @@ module.exports = class Services {
           const optional =
             typeof addOptions === 'function' ? addOptions(msg) : {};
           return Promise.resolve(
-            service.request({ ...this.request, ...auth, ...optional }, msg.data)
+            service.request(
+              { ...this.request, ...auth, msg, ...optional },
+              msg.data
+            )
           ).asCallback(reply);
         });
       });
