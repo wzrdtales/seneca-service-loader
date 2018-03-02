@@ -1,8 +1,3 @@
-● Validation Warning:
-
-  Unknown option "single-quote" with value true was found. Did you mean "singleQuote"?
-  This is probably a typing mistake. Fixing it will remove this message.
-
 'use strict';
 
 const Promise = require('bluebird');
