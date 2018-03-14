@@ -1,3 +1,13 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/wzrdtales/seneca-service-loader/compare/v1.1.1...v1.2.0) (2018-03-14)
+
+
+### Features
+
+* **api:** add decorate and stop to api ([3772fed](https://github.com/wzrdtales/seneca-service-loader/commit/3772fed))
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/wzrdtales/seneca-service-loader/compare/v1.1.0...v1.1.1) (2018-03-02)
 
