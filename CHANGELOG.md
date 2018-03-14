@@ -1,3 +1,13 @@
+<a name="1.2.1"></a>
+## [1.2.1](https://github.com/wzrdtales/seneca-service-loader/compare/v1.2.0...v1.2.1) (2018-03-14)
+
+
+### Bug Fixes
+
+* **api:** add missing decorate to api ([9d956bf](https://github.com/wzrdtales/seneca-service-loader/commit/9d956bf))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/wzrdtales/seneca-service-loader/compare/v1.1.1...v1.2.0) (2018-03-14)
 
