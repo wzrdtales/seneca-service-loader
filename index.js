@@ -11,14 +11,16 @@ const RESERVED = ['server', 'seneca'];
 
 module.exports = class Services {
   constructor (seneca) {
+    this.events = new ServiceEvents();
     this.request = {
       server: {
-        plugins: {}
+        plugins: {},
+        events: this.events
       },
+      decorate: this.decorate,
       seneca: seneca
     };
     this.seneca = seneca;
-    this.events = new ServiceEvents();
   }
 
   expose (key, value) {
