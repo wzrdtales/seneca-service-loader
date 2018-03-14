@@ -3,6 +3,11 @@
 const Promise = require('bluebird');
 const glob = Promise.promisify(require('glob'));
 const path = require('path');
+const EventEmitter = require('events');
+
+class ServiceEvents extends EventEmitter {}
+
+const RESERVED = ['server', 'seneca'];
 
 module.exports = class Services {
   constructor (seneca) {
@@ -13,10 +18,19 @@ module.exports = class Services {
       seneca: seneca
     };
     this.seneca = seneca;
+    this.events = new ServiceEvents();
   }
 
   expose (key, value) {
     this.request.server.plugins[key] = value;
+  }
+
+  decorate (key, value) {
+    if (RESERVED.indexOf(key) !== -1) {
+      throw new Error(`Invalid name! "${key}" is a reserved keyword.`);
+    }
+
+    this.request[key] = value;
   }
 
   register (plugins) {
@@ -67,5 +81,10 @@ module.exports = class Services {
           ).asCallback(reply);
         });
       });
+  }
+
+  stop () {
+    this.events.emit('stop');
+    this.seneca.close();
   }
 };
