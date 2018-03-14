@@ -17,7 +17,7 @@ module.exports = class Services {
         plugins: {},
         events: this.events
       },
-      decorate: this.decorate,
+      decorate: this.decorate.bind(this),
       seneca: seneca
     };
     this.seneca = seneca;
