@@ -1,3 +1,13 @@
+<a name="1.2.2"></a>
+## [1.2.2](https://github.com/wzrdtales/seneca-service-loader/compare/v1.2.1...v1.2.2) (2018-03-14)
+
+
+### Bug Fixes
+
+* **api:** bind context to decorate api ([81f8319](https://github.com/wzrdtales/seneca-service-loader/commit/81f8319))
+
+
+
 <a name="1.2.1"></a>
 ## [1.2.1](https://github.com/wzrdtales/seneca-service-loader/compare/v1.2.0...v1.2.1) (2018-03-14)
 
