@@ -9,7 +9,8 @@
   "author": "Tobias Gurtzick <magic@wizardtales.com>",
   "license": "MIT",
   "dependencies": {
-    "bluebird": "^3.5.1"
+    "bluebird": "^3.5.1",
+    "glob": "^7.1.6"
   },
   "devDependencies": {
     "eslint": "^4.9.0",
