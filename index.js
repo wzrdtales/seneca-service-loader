@@ -69,8 +69,13 @@ module.exports = class Services {
 
   load (options = {}, addOptions) {
     return glob(options.globPath || path.resolve('./lib/controllers/**/*.js'))
-      .map(service => require(service))
-      .each(service => {
+      .map(service => ({ name: service, service: require(service) }))
+      .each(({ service, name }) => {
+        if (typeof service.request !== 'function') {
+          console.error(`The service ${name} does not have a request payload!`);
+          return;
+        }
+
         this.seneca.add(service.pin, (msg, reply) => {
           const auth = { auth: { credentials: msg.session } } || {};
           const optional =
