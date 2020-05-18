@@ -13,6 +13,7 @@ module.exports = class Services {
   constructor (seneca) {
     this.events = new ServiceEvents();
     this.request = {
+      chainLoader: this.chainLoader.bind(this),
       server: {
         plugins: {},
         events: this.events
