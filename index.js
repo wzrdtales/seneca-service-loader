@@ -20,6 +20,7 @@ module.exports = class Services {
       decorate: this.decorate.bind(this),
       seneca: seneca
     };
+    this.chain = [];
     this.seneca = seneca;
   }
 
@@ -33,6 +34,10 @@ module.exports = class Services {
     }
 
     this.request[key] = value;
+  }
+
+  chainLoader (fn) {
+    this.chain.push(fn);
   }
 
   register (plugins) {
@@ -80,12 +85,31 @@ module.exports = class Services {
           const auth = { auth: { credentials: msg.session } } || {};
           const optional =
             typeof addOptions === 'function' ? addOptions(msg) : {};
-          return Promise.resolve(
-            service.request(
-              { ...this.request, ...auth, msg, ...optional },
-              msg.data
-            )
-          ).asCallback(reply);
+
+          if (this.chain.length) {
+            const chain = this.chain
+              .map(n => n(service.pin))
+              .filter(n => n !== null);
+            const PChain = Promise.resolve();
+
+            for (let loader of chain) {
+              PChain.then(() => loader());
+            }
+
+            return PChain.then(() =>
+              service.request(
+                { ...this.request, ...auth, msg, ...optional },
+                msg.data
+              )
+            ).asCallback(reply);
+          } else {
+            return Promise.resolve(
+              service.request(
+                { ...this.request, ...auth, msg, ...optional },
+                msg.data
+              )
+            ).asCallback(reply);
+          }
         });
       });
   }
