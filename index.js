@@ -82,35 +82,35 @@ module.exports = class Services {
           return;
         }
 
+        let PChain = () => Promise.resolve();
+        if (this.chain.length) {
+          const chain = this.chain
+            .map(n => n(service.pin))
+            .filter(n => typeof n === 'function');
+
+          PChain = () => {
+            let s = Promise.resolve();
+            for (const loader of chain) {
+              s = s.then(loader);
+            }
+
+            return s;
+          };
+        }
+
         this.seneca.add(service.pin, (msg, reply) => {
           const auth = { auth: { credentials: msg.session } } || {};
           const optional =
             typeof addOptions === 'function' ? addOptions(msg) : {};
 
-          if (this.chain.length) {
-            const chain = this.chain
-              .map(n => n(service.pin))
-              .filter(n => typeof n !== 'function');
-            const PChain = Promise.resolve();
-
-            for (let loader of chain) {
-              PChain.then(() => loader());
-            }
-
-            return PChain.then(() =>
+          return PChain()
+            .then(() =>
               service.request(
                 { ...this.request, ...auth, msg, ...optional },
                 msg.data
               )
-            ).asCallback(reply);
-          } else {
-            return Promise.resolve(
-              service.request(
-                { ...this.request, ...auth, msg, ...optional },
-                msg.data
-              )
-            ).asCallback(reply);
-          }
+            )
+            .asCallback(reply);
         });
       });
   }
