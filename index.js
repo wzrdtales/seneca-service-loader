@@ -90,7 +90,7 @@ module.exports = class Services {
           if (this.chain.length) {
             const chain = this.chain
               .map(n => n(service.pin))
-              .filter(n => n !== null);
+              .filter(n => typeof n !== 'function');
             const PChain = Promise.resolve();
 
             for (let loader of chain) {
