@@ -14,6 +14,7 @@ module.exports = class Services {
     this.events = new ServiceEvents();
     this.request = {
       chainLoader: this.chainLoader.bind(this),
+      chainProcessor: this.chainProcessor.bind(this),
       server: {
         plugins: {},
         events: this.events
@@ -22,6 +23,7 @@ module.exports = class Services {
       seneca: seneca
     };
     this.chain = [];
+    this.processor = [];
     this.seneca = seneca;
   }
 
@@ -39,6 +41,10 @@ module.exports = class Services {
 
   chainLoader (fn) {
     this.chain.push(fn);
+  }
+
+  chainProcessor (fn) {
+    this.processor.push(fn);
   }
 
   register (plugins) {
@@ -83,12 +89,28 @@ module.exports = class Services {
         }
 
         let PChain = () => Promise.resolve();
+        CChain = () => Promise.resolve();
         if (this.chain.length) {
           const chain = this.chain
             .map(n => n(service.pin))
             .filter(n => typeof n === 'function');
 
           PChain = () => {
+            let s = Promise.resolve();
+            for (const loader of chain) {
+              s = s.then(loader);
+            }
+
+            return s;
+          };
+        }
+
+        if (this.processor.length) {
+          const chain = this.processor
+            .map(n => n(service.pin))
+            .filter(n => typeof n === 'function');
+
+          CChain = () => {
             let s = Promise.resolve();
             for (const loader of chain) {
               s = s.then(loader);
@@ -110,6 +132,16 @@ module.exports = class Services {
                 msg.data
               )
             )
+            .then(a => {
+              return CChain().then(() => {
+                return a;
+              });
+            })
+            .catch(e => {
+              return CChain().then(() => {
+                throw e;
+              });
+            })
             .asCallback(reply);
         });
       });
