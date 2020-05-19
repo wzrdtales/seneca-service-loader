@@ -89,7 +89,7 @@ module.exports = class Services {
         }
 
         let PChain = () => Promise.resolve();
-        CChain = () => Promise.resolve();
+        let CChain = () => Promise.resolve();
         if (this.chain.length) {
           const chain = this.chain
             .map(n => n(service.pin))
